@@ -1,10 +1,11 @@
 import time
 import pychromecast
 import csv
+import pyautogui
 
 with open("List-Media.csv", encoding='utf-8', newline='') as csvfile:
-    Media=list(csv.reader(csvfile,delimiter=";")) 
-    print("Media link",Media)
+    Medias=list(csv.reader(csvfile,delimiter=";")) 
+    print("Medias link",Medias)
 
 def start_cast():
     global cast
@@ -17,10 +18,15 @@ def start_cast():
 
 
 # show an image
-def show_image(url):
+def show_media(url):
     global cast
     mc = cast.media_controller
-    mc.play_media(url, 'image/jpeg')
+    #si url contient "http" alors c'est une image
+    if "jpg" in url:
+        mc.play_media(url, 'image/jpeg')
+    else:
+        mc.play_media(url, 'image/jpeg')
+    #
     mc.block_until_active()
     return mc.status
 
@@ -29,11 +35,20 @@ def stop_cast():
     cast.quit_app()
     cast.disconnect()
 
+def boucle(nombre):
+    for x in range(nombre):
+        show_media(Medias[x][0])
+        time.sleep(TempsDePause)
 
+### Main ###
+NameOfCast = "Mat" #Name of your Chromecast
+MediasNumber = len(Medias) #Number of medias in your list
+TempsDePause = 5 #Time between each media
+print("MediasNumber",MediasNumber) #Debug
 
-NameOfCast = "Mat"
-start_cast()
-show_image(Media[2][0])
+start_cast() 
 
-time.sleep(10)
+boucle(MediasNumber)
+
+pyautogui.alert(text='Close?', title='Main', button='OK')
 stop_cast()
