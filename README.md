@@ -14,7 +14,6 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Authors
 - [**@Hidden-Warden**](https://github.com/Hidden-Warden) - Future french student in BTS SIO
-- [**@Ahhj93**](https://github.com/Ahhj93) - Future french student in CPGE MP2I
 
 ## License
 This project is licensed under the MLP-2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
