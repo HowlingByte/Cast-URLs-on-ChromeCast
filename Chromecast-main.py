@@ -2,6 +2,16 @@ import time
 import pychromecast
 import csv
 import pyautogui
+import tkinter as tk
+
+global cast
+global NameOfCast
+global TempsDePause
+global Medias
+global text1
+global text2
+global checkbox_var
+
 
 with open("List-Media.csv", encoding='utf-8', newline='') as csvfile:
     Medias=list(csv.reader(csvfile,delimiter=";")) 
@@ -35,20 +45,63 @@ def stop_cast():
     cast.quit_app()
     cast.disconnect()
 
-def boucle(nombre):
-    for x in range(nombre):
-        show_media(Medias[x][0])
-        time.sleep(TempsDePause)
+def boucle(nombre, Infini = False):
+    if Infini == True:
+        while True:
+            for x in range(nombre):
+                show_media(Medias[x][0])
+                time.sleep(TempsDePause)
+    else:
+        for x in range(nombre):
+            show_media(Medias[x][0])
+            time.sleep(TempsDePause)
 
-### Main ###
-NameOfCast = "Mat" #Name of your Chromecast
-MediasNumber = len(Medias) #Number of medias in your list
-TempsDePause = 5 #Time between each media
-print("MediasNumber",MediasNumber) #Debug
+####
+#UI
+####
+def UI():
+    def Send():
+        global NameOfCast
+        global TempsDePause
+        NameOfCast = text1.get()
+        TempsDePause = int(text2.get())
+        print("NameOfCast:",NameOfCast)
+        print("TempsDePause:",TempsDePause)
+        start_cast()
+        if checkbox_var.get() == 1: 
+            boucle(len(Medias), Infini = True)
+        else:
+            boucle(len(Medias))
+        stop_cast()
 
-start_cast() 
+    # create ui
+    root = tk.Tk()
+    root.title("Chromecast-URL")
+    root.geometry("400x300")
+    root.resizable(False, False)
+    root.configure(background='red')
+        
+    #text 
+    text1_label = tk.Label(root, text="Name of Chromecast:")
+    text1_label.pack()
+    text1 = tk.Entry(root)
+    text1.pack()
+    text2_label = tk.Label(root, text="Time between photos (s):")
+    text2_label.pack()
+    text2 = tk.Entry(root)
+    text2.pack()
 
-boucle(MediasNumber)
+    checkbox_var = tk.IntVar()
+    checkbox = tk.Checkbutton(root, text="Loop", variable=checkbox_var)
+    checkbox.pack()
 
-pyautogui.alert(text='Close?', title='Main', button='OK')
-stop_cast()
+    # Create the submit button
+    submit_button = tk.Button(root, text="Submit", command=Send)
+    submit_button.pack()
+
+    # Start the main event loop
+    root.mainloop()
+
+    
+
+UI()
