@@ -10,8 +10,8 @@ global TempsDePause
 global Medias
 global text1
 global text2
+global text3
 global checkbox_var
-
 
 with open("List-Media.csv", encoding='utf-8', newline='') as csvfile:
     Medias=list(csv.reader(csvfile,delimiter=";")) 
@@ -26,8 +26,7 @@ def start_cast():
     cast.wait()
     print(cast.status)
 
-
-# show an image
+# Share an image (from a URL) to the Chromecast
 def show_media(url):
     global cast
     mc = cast.media_controller
@@ -39,22 +38,19 @@ def show_media(url):
     #
     mc.block_until_active()
     return mc.status
-
+# Stop the media playing on the Chromecast and disconnect
 def stop_cast():
     global cast
     cast.quit_app()
     cast.disconnect()
-
-def boucle(nombre, Infini = False):
-    if Infini == True:
-        while True:
-            for x in range(nombre):
-                show_media(Medias[x][0])
-                time.sleep(TempsDePause)
-    else:
-        for x in range(nombre):
+# Loop through the images in the list (url(s) inside of csv file)
+def loop(number, Repetition=1, EndAfterLoop = False):
+    for i in range(Repetition):
+        for x in range(number):
             show_media(Medias[x][0])
             time.sleep(TempsDePause)
+    if EndAfterLoop == True:
+        stop_cast()
 
 ####
 #UI
@@ -65,16 +61,17 @@ def UI():
         global TempsDePause
         NameOfCast = text1.get()
         TempsDePause = int(text2.get())
+        Repetition = int(text3.get())
         print("NameOfCast:",NameOfCast)
         print("TempsDePause:",TempsDePause)
-        start_cast()
-        if checkbox_var.get() == 1: 
-            boucle(len(Medias), Infini = True)
+        start_cast() 
+        if checkbox_var.get() == 1:
+            loop(len(Medias), Repetition, EndAfterLoop = True)
         else:
-            boucle(len(Medias))
-        stop_cast()
+            loop(len(Medias), Repetition)
+        
 
-    # create ui
+    # create UI
     root = tk.Tk()
     root.title("Chromecast-URL")
     root.geometry("400x300")
@@ -90,10 +87,15 @@ def UI():
     text2_label.pack()
     text2 = tk.Entry(root)
     text2.pack()
+    text3_label = tk.Label(root, text="Repetition:")
+    text3_label.pack()
+    text3 = tk.Entry(root)
+    text3.pack()
 
-    checkbox_var = tk.IntVar()
-    checkbox = tk.Checkbutton(root, text="Loop", variable=checkbox_var)
-    checkbox.pack()
+    #create another checkbox
+    checkbox_var = tk.IntVar(value=1)
+    checkbox1 = tk.Checkbutton(root, text="End connection after loop", variable=checkbox_var)
+    checkbox1.pack()
 
     # Create the submit button
     submit_button = tk.Button(root, text="Submit", command=Send)
@@ -101,7 +103,5 @@ def UI():
 
     # Start the main event loop
     root.mainloop()
-
-    
 
 UI()
