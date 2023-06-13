@@ -1,3 +1,0 @@
-pychromecast
-pyautogui
-tkinter
