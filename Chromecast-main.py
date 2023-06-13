@@ -36,7 +36,7 @@ def start_cast(stop_connection = False):
             pass
 
 # Share an image (from a URL) to the Chromecast
-def show_media(url, temp=10):
+def show_media(url, x=0, duration=10): #duration is in seconds, by default set at 10 (for mp4)
     global cast
     global mc
     mc = cast.media_controller
@@ -48,7 +48,12 @@ def show_media(url, temp=10):
     elif "mp4" in url:
         mc.play_media(url, 'video/mp4')
         mc.block_until_active()
-        time.sleep(int(Medias[temp][1]))
+        if Medias[x][1] != "":
+            duration = int(Medias[x][1])
+            print("Found duration in csv file", duration ,"s)")
+        else:
+            print("No duration found in csv file, set to default (", duration ,"s)")
+        time.sleep(int(duration))
 
     else:
         mc.play_media(url, 'image/jpeg')
