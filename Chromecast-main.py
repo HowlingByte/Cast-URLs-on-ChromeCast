@@ -67,11 +67,12 @@ def show_media(url, x=0, duration=10): #duration is in seconds, by default set a
     elif "mp4" in url:
         mc.play_media(url, 'video/mp4')
         mc.block_until_active()
-        if Medias[x][1] != "" and type(Medias[x][1]) == int:
+        if Medias[x][1] != "":
             duration = int(Medias[x][1])
             print("Found duration in csv file (", duration ,"s)")
         else:
             print("No duration found in csv file, set to default (", duration ,"s)")
+            print("X=", x , "Medias[x][1]=", Medias[x][1])
         time.sleep(int(duration))
 
     else:
