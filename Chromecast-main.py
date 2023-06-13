@@ -48,7 +48,7 @@ def show_media(url, x=0, duration=10): #duration is in seconds, by default set a
     elif "mp4" in url:
         mc.play_media(url, 'video/mp4')
         mc.block_until_active()
-        if Medias[x][1] != "":
+        if Medias[x][1] != "" and type(Medias[x][1]) == int:
             duration = int(Medias[x][1])
             print("Found duration in csv file (", duration ,"s)")
         else:
@@ -168,10 +168,11 @@ def UI():
     # Create the quit button
     quit_button = tk.Button(root, text="Quit and end connection", command=quit)
     quit_button.pack(side=tk.BOTTOM)
+    quit_button.configure(background='#FF4A4A', foreground='#FFFFFF', font=('Arial', 12, 'bold'))
 
     # Create the clear log button
     clear_log_button = tk.Button(root, text="Clear log", command=clear_log)
-    clear_log_button.pack(side=tk.BOTTOM)
+    clear_log_button.place(relx=1.0, rely=1.0, anchor='se')
     
     # When the window is closed, quit the application
     root.protocol("WM_DELETE_WINDOW", quit)
