@@ -1,4 +1,0 @@
-pychromecast
-pyautogui
-tkinter
-moviepy
