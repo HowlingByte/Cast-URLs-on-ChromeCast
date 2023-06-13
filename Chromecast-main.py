@@ -50,7 +50,7 @@ def show_media(url, x=0, duration=10): #duration is in seconds, by default set a
         mc.block_until_active()
         if Medias[x][1] != "":
             duration = int(Medias[x][1])
-            print("Found duration in csv file", duration ,"s)")
+            print("Found duration in csv file (", duration ,"s)")
         else:
             print("No duration found in csv file, set to default (", duration ,"s)")
         time.sleep(int(duration))
