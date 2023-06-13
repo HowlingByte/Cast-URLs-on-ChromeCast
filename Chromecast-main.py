@@ -110,7 +110,7 @@ def UI():
     # create UI
     root = tk.Tk()
     root.title("Chromecast-URL")
-    root.geometry("400x300")
+    root.geometry("450x350")
     root.resizable(False, False)
     root.configure(background='#2B2B2B')
         
@@ -162,15 +162,16 @@ def UI():
 
     # Create the submit button
     submit_button = tk.Button(root, text="Submit", command=Send)
-    submit_button.pack()
+    submit_button.pack(ipadx=20, ipady=10)
+    submit_button.configure(background='#6D4AFF', foreground='#FFFFFF', font=('Arial', 12, 'bold'))
 
     # Create the quit button
     quit_button = tk.Button(root, text="Quit and end connection", command=quit)
-    quit_button.pack()
+    quit_button.pack(side=tk.BOTTOM)
 
     # Create the clear log button
     clear_log_button = tk.Button(root, text="Clear log", command=clear_log)
-    clear_log_button.pack()
+    clear_log_button.pack(side=tk.BOTTOM)
     
     # When the window is closed, quit the application
     root.protocol("WM_DELETE_WINDOW", quit)
