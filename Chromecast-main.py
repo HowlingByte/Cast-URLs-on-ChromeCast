@@ -97,8 +97,8 @@ def clear_log(): # Clear the log file
     """
     Clear the log file \n
     """
-        with open("log.txt", "w") as file:
-            file.write("")
+    with open("log.txt", "w") as file:
+        file.write("")
 ##### UI ####
 def UI():
     def Send():
