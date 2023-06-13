@@ -113,11 +113,11 @@ def UI():
     try:
         with open("log.txt", "r") as file:
             lines = file.readlines()
-            # Parse the lines to get the input values
+            # Write the values of the file to variables
             name_of_chromecast = lines[0].split(":")[1].strip()
             time_between_photos = lines[1].split(":")[1].strip()
             repetition = lines[2].split(":")[1].strip()
-            end_after_loop = lines[3].split(":")[1].strip()
+            #end_after_loop = lines[3].split(":")[1].strip()
             
             # Set the values in the input fields
             text1_label = tk.Label(root, text="Name of Chromecast:")
