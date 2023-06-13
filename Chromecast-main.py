@@ -208,9 +208,6 @@ def UI():
     menubar.add_cascade(label="About", menu=filemenu)
     root.config(menu=menubar)
 
-
-
-
     # When the window is closed, quit the application
     root.protocol("WM_DELETE_WINDOW", quit)
 
