@@ -3,6 +3,7 @@ import pychromecast
 import csv
 import pyautogui
 import tkinter as tk
+import webbrowser
 from threading import Thread
 
 global cast
@@ -14,19 +15,28 @@ global text1
 global text2
 global text3
 global checkbox_var
-
+#Open CSV file and put it in a list (Medias)
 with open("List-Media.csv", encoding='utf-8', newline='') as csvfile:
     Medias=list(csv.reader(csvfile,delimiter=";")) 
     print("Medias link",Medias)
-
+#Start the connection with the Chromecast
 def start_cast(stop_connection = False):
+    """
+    Start the connection with the Chromecast \n
+    if stop_connection = True, close the connection \n
+    Example: \n
+    - start_cast(stop_connection = False) #Start the connection \n
+    - start_cast(stop_connection = True) #Close the connection \n
+    or 
+    - start_cast() #Start the connection \n
+    """
     if stop_connection == False:
         global cast
         chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=[NameOfCast])
         print("Found {} chromecasts".format(len(chromecasts)))
         cast = chromecasts[0]
         cast.wait()
-        print(cast.status)
+        print("Cast.status", cast.status)
     elif stop_connection == True:
         try:
             cast.quit_app()
@@ -37,6 +47,15 @@ def start_cast(stop_connection = False):
 
 # Share an image (from a URL) to the Chromecast
 def show_media(url, x=0, duration=10): #duration is in seconds, by default set at 10 (for mp4)
+    """
+    Share the media (image or video (URL)) to the Chromecast \n
+    Example: \n
+    - show_media("https://[...].png") #Share an image \n
+    Info: \n
+    "x" and "duration" are optional and only used for videos (.mp4) \n
+    - x = Knows the line of the URL in the CSV file, used to check if duration is writen next to a video url\n
+    - duration = If no duration mention in CSV file, the default duration is set to 10 seconds\n
+    """
     global cast
     global mc
     mc = cast.media_controller
@@ -62,15 +81,22 @@ def show_media(url, x=0, duration=10): #duration is in seconds, by default set a
 
 # Loop through the images in the list (url(s) inside of csv file)
 def loop(number, Repetition=1, EndAfterLoop = False):
+    """
+    number = number of URL in the list (CSV) \n
+    Repetition = number of time the loop will be repeated \n
+    EndAfterLoop = if True, the connection will be closed after the end of the loop \n
+    """
     for i in range(Repetition):
         for x in range(number):
             show_media(Medias[x][0], x)
-            
             time.sleep(TempsDePause)
     if EndAfterLoop == True:
         start_cast(stop_connection = True)
 
 def clear_log(): # Clear the log file
+    """
+    Clear the log file \n
+    """
         with open("log.txt", "w") as file:
             file.write("")
 ##### UI ####
@@ -130,7 +156,7 @@ def UI():
             text1 = tk.Entry(root)
             text1.insert(0, name_of_chromecast)
             text1.pack()
-            text2_label = tk.Label(root, text="Time between photos (s):")
+            text2_label = tk.Label(root, text="Time between URLs (s):")
             text2_label.pack()
             text2 = tk.Entry(root)
             text2.insert(0, time_between_photos)
@@ -146,7 +172,7 @@ def UI():
         text1_label.pack()
         text1 = tk.Entry(root)
         text1.pack()
-        text2_label = tk.Label(root, text="Time between photos (s):")
+        text2_label = tk.Label(root, text="Time between URLs (s):")
         text2_label.pack()
         text2 = tk.Entry(root)
         text2.pack()
@@ -173,7 +199,17 @@ def UI():
     # Create the clear log button
     clear_log_button = tk.Button(root, text="Clear log", command=clear_log)
     clear_log_button.place(relx=1.0, rely=1.0, anchor='se')
-    
+
+    # Add menu bar
+    menubar = tk.Menu(root)
+    filemenu = tk.Menu(menubar, tearoff=0)
+    filemenu.add_command(label="Github", command=lambda: webbrowser.open_new("https://github.com/HowlingByte/Cast-URLs-on-ChromeCast"))
+    menubar.add_cascade(label="About", menu=filemenu)
+    root.config(menu=menubar)
+
+
+
+
     # When the window is closed, quit the application
     root.protocol("WM_DELETE_WINDOW", quit)
 
