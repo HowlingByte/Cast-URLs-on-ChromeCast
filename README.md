@@ -13,7 +13,7 @@ At first, the goal of this app was to get your likes from your twitter account a
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## Authors
-- [**@Hidden-Warden**](https://github.com/Hidden-Warden) - Future french student in BTS SIO
+- [**@Hidden-Warden**](https://github.com/Hidden-Warden) - French student in BTS SIO
 
 ## License
 This project is licensed under the MLP-2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
